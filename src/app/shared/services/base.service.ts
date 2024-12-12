@@ -12,7 +12,8 @@ export class BaseService<T> {
 
   httpOptions ={
     headers: new HttpHeaders({
-      'Content-type': 'application/json'
+      'Content-type': 'application/json',
+      'Accept': 'application/json'
     })
   }
 
@@ -47,7 +48,7 @@ export class BaseService<T> {
   }
 
   getAll() {
-    return this.http.get<T>(this.resourcePath(), this.httpOptions)
+    return this.http.get<T[]>(this.resourcePath(), this.httpOptions)
       .pipe(retry(2), catchError(this.handleError));
   }
 }
