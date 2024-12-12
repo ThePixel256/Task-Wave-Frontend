@@ -1,0 +1,70 @@
+<div class="kanban-board-page">
+  <header class="kanban-board-header">
+    <h1 class="kanban-board-title">Gestión de Tareas</h1>
+    <div class="kanban-board-actions">
+      <button class="kanban-new-task-button" (click)="openTaskDialog()">+ Nueva Tarea</button>
+    </div>
+  </header>
+  <main class="kanban-board-container">
+    <div class="kanban-column">
+      <h2 class="kanban-column-title">Por Hacer</h2>
+      <div
+        cdkDropList
+        id="todo"
+        #todoList="cdkDropList"
+        [cdkDropListData]="filteredTasksByStatusTodo()"
+        [cdkDropListConnectedTo]="[inProgressList, doneList]"
+        class="kanban-task-list"
+        (cdkDropListDropped)="drop($event)">
+        @for (task of filteredTasksByStatusTodo(); track task.id) {
+          <app-task-item
+            [task]="task"
+            (click)="openTaskDialog(task, false)"
+            cdkDrag
+            class="kanban-task-item">
+          </app-task-item>
+        }
+      </div>
+    </div>
+    <div class="kanban-column">
+      <h2 class="kanban-column-title">En Progreso</h2>
+      <div
+        cdkDropList
+        id="inProgress"
+        #inProgressList="cdkDropList"
+        [cdkDropListData]="filteredTasksByStatusInProgress()"
+        [cdkDropListConnectedTo]="[todoList, doneList]"
+        class="kanban-task-list"
+        (cdkDropListDropped)="drop($event)">
+        @for (task of filteredTasksByStatusInProgress(); track task.id) {
+          <app-task-item
+            [task]="task"
+            (click)="openTaskDialog(task, false)"
+            cdkDrag
+            class="kanban-task-item">
+          </app-task-item>
+        }
+      </div>
+    </div>
+    <div class="kanban-column">
+      <h2 class="kanban-column-title">Finalizado</h2>
+      <div
+        cdkDropList
+        id="done"
+        #doneList="cdkDropList"
+        [cdkDropListData]="filteredTasksByStatusDone()"
+        [cdkDropListConnectedTo]="[todoList, inProgressList]"
+        class="kanban-task-list"
+        (cdkDropListDropped)="drop($event)">
+        @for (task of filteredTasksByStatusDone(); track task.id) {
+          <app-task-item
+            [task]="task"
+            (click)="openTaskDialog(task, false)"
+            cdkDrag
+            class="kanban-task-item">
+          </app-task-item>
+        }
+      </div>
+    </div>
+  </main>
+</div>
