@@ -1,0 +1,47 @@
+<div class="boards-page">
+  <!-- Header -->
+  <header class="boards-header">
+    <h1 class="boards-title">Kanban Universe</h1>
+    <p class="boards-subtitle">
+      A space where creativity and organization converge. Shape your workflow like never before.
+    </p>
+  </header>
+
+  <!-- Main Content -->
+  <main class="boards-container">
+    <!-- Owned Boards Section -->
+    <section class="boards-section">
+      <header class="section-header">
+        <h2 class="section-title">Your Boards</h2>
+        <button class="section-button" (click)="openBoardDialog()">+ New Board</button>
+      </header>
+      <p class="section-description">
+        Boards you own. Take full control of your projects with these futuristic tools.
+      </p>
+      <div class="carousel" #ownedBoardsContainer>
+        <div class="carousel-track" #ownedBoardsTrack>
+          @for (board of ownedBoards(); track board.id) {
+            <app-board-item [board]="board" class="carousel-item"></app-board-item>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Collaborating Boards Section -->
+    <section class="boards-section">
+      <header class="section-header">
+        <h2 class="section-title">Collaborations</h2>
+      </header>
+      <p class="section-description">
+        Join forces on boards where you collaborate with others. Innovation happens here.
+      </p>
+      <div class="carousel" #colabBoardsContainer>
+        <div class="carousel-track" #colabBoardsTrack>
+          @for (board of memberBoards(); track board.id) {
+            <app-board-item [board]="board" class="carousel-item"></app-board-item>
+          }
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
