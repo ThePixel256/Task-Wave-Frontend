@@ -1,0 +1,61 @@
+<div class="dialog">
+  <h2 class="dialog-title">Nuevo tablero</h2>
+  <form>
+    <div class="dialog-content">
+      <div class="form-field">
+        <label for="boardTitle" class="form-label">Tablero</label>
+        <input
+          id="boardTitle"
+          class="form-input"
+          placeholder="Escribe el título del tablero"
+          [(ngModel)]="board().title"
+          name="boardTitle">
+      </div>
+      <div class="form-field">
+        <label for="boardDescription" class="form-label">Descripción</label>
+        <input
+          id="boardDescription"
+          class="form-input"
+          placeholder="Escribe una descripción"
+          [(ngModel)]="board().description"
+          name="boardDescription">
+      </div>
+    </div>
+    <div class="form-field">
+      <mat-form-field>
+        <mat-label class="form-label">Agregar miembros</mat-label>
+        <input
+          #input
+          type="text"
+          placeholder="Buscar miembro"
+          matInput
+          [formControl]="filteredMemberInputControl"
+          [matAutocomplete]="auto"
+          (input)="filterMembers()"
+          (focus)="filterMembers()">
+        <mat-autocomplete requireSelection #auto="matAutocomplete">
+          @for (member of filteredMembers(); track member.id) {
+            <mat-option [class]="{ 'hidden': member.userId === userId() }" [value]="member" (click)="addMember(member)">
+              {{ member.firstName }} {{ member.lastName }} {{ member.email }}
+            </mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div class="members-list">
+      @for (member of selectedMembers(); track member.id) {
+        <div class="member-item">
+          <div class="member-avatar"></div>
+          <p class="member-name">{{ member.firstName }} {{ member.lastName }}</p>
+          <button class="remove-member" (click)="removeMember(member.id)">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+      }
+    </div>
+    <div class="dialog-actions">
+      <button class="cancel-button" (click)="onNoClick()">Cancelar</button>
+      <button class="save-button" [mat-dialog-close]="returnBoardDialogDataValue()">Crear</button>
+    </div>
+  </form>
+</div>
