@@ -1,15 +1,21 @@
 import {CanActivateFn, Router} from '@angular/router';
 import {inject} from "@angular/core";
-import {AuthenticationService} from "./authentication.service";
-import {map, take} from "rxjs";
 
-export const authenticationGuard: CanActivateFn = (route, state) => {
-  const authenticationService = inject(AuthenticationService);
+export const authenticationGuard: CanActivateFn = () => {
   const router = inject(Router);
-  return authenticationService.isSignedIn.pipe(
-    take(1), map(isSignedIn => {
-      if (isSignedIn) return true;
-      router.navigate(['/login']).then();
-      return false;
-    }));
+
+  const userId = localStorage.getItem('userId');
+  const username = localStorage.getItem('username');
+  const token = localStorage.getItem('token');
+
+  const isLoggedIn = userId && userId !== '0' &&
+    username && username !== '' &&
+    token && token !== '';
+
+  if (!isLoggedIn) {
+    router.navigate(['/login']).then();
+    return false;
+  }
+
+  return true;
 };
