@@ -1,0 +1,33 @@
+<div class="dialog">
+  <h2 class="dialog-title">
+    {{ isNew() ? 'Nueva tarea' : 'Editar tarea' }}
+  </h2>
+  <form>
+    <div class="dialog-content">
+      <div class="form-field">
+        <label for="taskTitle" class="form-label">Tarea</label>
+        <input
+          id="taskTitle"
+          class="form-input"
+          placeholder="Escribe el título de la tarea"
+          [(ngModel)]="task().title"
+          name="taskTitle">
+      </div>
+      <div class="form-field">
+        <label for="taskDescription" class="form-label">Descripción</label>
+        <input
+          id="taskDescription"
+          class="form-input"
+          placeholder="Escribe una descripción"
+          [(ngModel)]="task().description"
+          name="taskDescription">
+      </div>
+    </div>
+    <div class="dialog-actions">
+      <button class="cancel-button" (click)="onNoClick()">Cancelar</button>
+      <button class="save-button" [mat-dialog-close]="task()">
+        {{ isNew() ? 'Crear' : 'Actualizar' }}
+      </button>
+    </div>
+  </form>
+</div>
