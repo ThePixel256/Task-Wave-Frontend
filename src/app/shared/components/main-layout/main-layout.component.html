@@ -1,0 +1,33 @@
+<div class="container">
+  <header class="header">
+    <mat-toolbar class="header-toolbar">
+      <h1 class="welcome-message" (click)="navigateToHome()">Bienvenido de nuevo {{username()}}!</h1>
+      <span class="spacer"></span>
+      <div class="profile-menu">
+        <button
+          mat-icon-button
+          class="profile-button"
+          aria-label="Open profile menu"
+        >
+          <mat-icon class="icon-display" aria-hidden="true">account_circle</mat-icon>
+        </button>
+        <ul class="profile-dropdown">
+          <li><a href="#">My Profile</a></li>
+          <li><a href="#">Settings</a></li>
+          <li><a style="cursor: pointer" (click)="logout()">Log Out</a></li>
+        </ul>
+      </div>
+    </mat-toolbar>
+  </header>
+  <main class="main">
+    <router-outlet></router-outlet>
+  </main>
+  <footer class="footer">
+    <p>&copy; 2024 Synclyne. All rights reserved.</p>
+    <nav class="footer-nav">
+      <a href="#" aria-label="Privacy Policy">Privacy Policy</a> |
+      <a href="#" aria-label="Terms of Service">Terms of Service</a> |
+      <a href="#" aria-label="Contact Us">Contact Us</a>
+    </nav>
+  </footer>
+</div>
