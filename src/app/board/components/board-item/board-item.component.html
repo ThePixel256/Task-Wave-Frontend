@@ -1,0 +1,16 @@
+<div class="custom-container">
+  <div class="header">
+    <div class="icon-placeholder">
+      <span class="material-icons">dashboard</span>
+    </div>
+    <h2 class="title">{{ board.title || 'Untitled' }}</h2>
+  </div>
+  <div class="content">
+    <p>{{ board.description || 'No description available yet.' }}</p>
+  </div>
+  <div class="actions">
+    <button class="explore-button" (click)="navigateToBoard()">
+      EXPLORE <span class="arrow">→</span>
+    </button>
+  </div>
+</div>
