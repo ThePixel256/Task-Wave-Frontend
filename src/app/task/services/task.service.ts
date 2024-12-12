@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {BaseService} from "../../shared/services/base.service";
-import {Task} from "../models/task.entity";
+import {Task} from "../model/task.entity";
 import {HttpClient} from "@angular/common/http";
 import {catchError, Observable, retry} from "rxjs";
 
@@ -14,8 +14,13 @@ export class TaskService extends BaseService<Task> {
     this.resourceEndpoint = '/tasks';
   }
 
-  getAllByUserId(userId: number) : Observable<Task[]>{
-    return this.http.get<Task[]>(`${this.resourcePath()}?userId=${userId}`, this.httpOptions)
+  public getAllByBoardId(boardId: number): Observable<Task[]> {
+    return this.http.get<Task[]>(`${this.resourcePath()}?boardId=${boardId}`, this.httpOptions)
+      .pipe(retry(2), catchError(this.handleError));
+  }
+
+  public patch(id: number, task: Task): Observable<Task> {
+    return this.http.patch<Task>(`${this.resourcePath()}/${id}`, JSON.stringify(task), this.httpOptions)
       .pipe(retry(2), catchError(this.handleError));
   }
 }
