@@ -5,17 +5,7 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <p>
         <mat-form-field>
-          <input type="text" matInput placeholder="Name" formControlName="name" class="input-field">
-        </mat-form-field>
-      </p>
-      <p>
-        <mat-form-field>
-          <input type="text" matInput placeholder="LastName" formControlName="lastname" class="input-field">
-        </mat-form-field>
-      </p>
-      <p>
-        <mat-form-field>
-          <input type="email" matInput placeholder="Email" formControlName="email" class="input-field">
+          <input type="text" matInput placeholder="Username" formControlName="username" class="input-field">
         </mat-form-field>
       </p>
       <p>
@@ -25,7 +15,17 @@
       </p>
       <p>
         <mat-form-field>
-          <input type="text" matInput placeholder="DNI" formControlName="dni" class="input-field">
+          <input type="text" matInput placeholder="First Name" formControlName="firstname" class="input-field">
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <input type="text" matInput placeholder="Last Name" formControlName="lastname" class="input-field">
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <input type="email" matInput placeholder="Email" formControlName="email" class="input-field">
         </mat-form-field>
       </p>
       <div class="button">

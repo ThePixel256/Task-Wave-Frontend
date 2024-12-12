@@ -32,16 +32,16 @@ export class SignInComponent {
 
   constructor(private fb: FormBuilder, private authenticationService: AuthenticationService) {
     this.form = this.fb.group({
-      email: ['', [Validators.required, Validators.minLength(1)]],
+      username: ['', [Validators.required, Validators.minLength(1)]],
       password: ['', [Validators.required, Validators.minLength(1)]]
     });
   }
 
   onSubmit() {
     if (this.form.invalid) return;
-    let email = this.form.value.email;
+    let username = this.form.value.username;
     let password = this.form.value.password;
-    const signInRequest = new SignInRequest(email, password);
+    const signInRequest = new SignInRequest(username, password);
     this.authenticationService.signIn(signInRequest);
     this.submitted = true;
   }

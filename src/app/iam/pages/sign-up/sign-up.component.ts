@@ -31,22 +31,23 @@ export class SignUpComponent {
 
   constructor(private fb: FormBuilder, private authenticationService: AuthenticationService) {
     this.form = this.fb.group({
-      name : ['', [Validators.required, Validators.minLength(1)]],
-      lastname: ['', [Validators.required, Validators.minLength(1)]],
-      email: ['', [Validators.required, Validators.minLength(1)]],
+      username : ['', [Validators.required, Validators.minLength(1)]],
       password: ['', [Validators.required, Validators.minLength(1)]],
-      dni: ['', [Validators.required, Validators.minLength(1)]]
+      firstname: ['', [Validators.required, Validators.minLength(1)]],
+      lastname: ['', [Validators.required, Validators.minLength(1)]],
+      email: ['', [Validators.required, Validators.minLength(1)]]
     });
   }
 
   onSubmit() {
     if (this.form.invalid) return;
-    let name = this.form.value.name;
-    let lastname = this.form.value.lastname;
-    let email = this.form.value.email;
-    let password = this.form.value.password;
-    let dni = this.form.value.dni;
-    const signInRequest = new SignUpRequest(name, lastname, email, password, dni);
+    const signInRequest = new SignUpRequest(
+      this.form.value.username,
+      this.form.value.password,
+      this.form.value.firstname,
+      this.form.value.lastname,
+      this.form.value.email
+    );
     this.authenticationService.signUp(signInRequest);
     this.submitted = true;
   }
