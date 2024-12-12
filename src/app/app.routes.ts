@@ -1,13 +1,24 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './service/pages/home/home.component';
 import {authenticationGuard} from "./iam/services/authentication.guard";
+import {MainLayoutComponent} from "./shared/components/main-layout/main-layout.component";
 
 export const routes: Routes = [
   {
     path: '',
-    title: 'home',
-    component: HomeComponent,
-    canActivate: [authenticationGuard]
+    component: MainLayoutComponent,
+    canActivate: [authenticationGuard],
+    children: [
+      {
+        path: '',
+        title: 'boards',
+        loadComponent: () => import('./board/pages/boards/boards.component').then(m => m.BoardsComponent)
+      },
+      {
+        path: 'boards/:id',
+        title: 'board',
+        loadComponent: () => import('./board/pages/board/board.component').then(m => m.BoardComponent)
+      }
+    ]
   },
   {
     path: 'login',
