@@ -1,0 +1,99 @@
+/* Task Item Container */
+.task-item {
+  background: rgba(255, 255, 255, 0.1); /* Fondo translúcido */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  color: #ffffff; /* Texto claro para contraste */
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.task-item:hover {
+  transform: translateY(-5px); /* Animación de elevación */
+  box-shadow: 0 8px 15px rgba(130, 177, 255, 0.4);
+  background: rgba(255, 255, 255, 0.15); /* Fondo más brillante */
+}
+
+/* Task Header */
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.task-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #82b1ff; /* Azul claro */
+  margin: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden; /* Manejo de texto largo */
+}
+
+/* Task Status */
+.task-status {
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 20px;
+  text-transform: capitalize;
+  white-space: nowrap;
+  display: inline-block;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Status Colors */
+.task-status-todo {
+  background: #f0ad4e; /* Naranja */
+  color: #ffffff;
+}
+
+.task-status-in-progress {
+  background: #5bc0de; /* Azul claro */
+  color: #ffffff;
+}
+
+.task-status-done {
+  background: #5cb85c; /* Verde */
+  color: #ffffff;
+}
+
+/* Task Description */
+.task-description {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8); /* Texto ligeramente más claro */
+  line-height: 1.4;
+  margin: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Muestra máximo 3 líneas */
+  -webkit-box-orient: vertical;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .task-item {
+    padding: 10px;
+  }
+
+  .task-title {
+    font-size: 1rem;
+  }
+
+  .task-description {
+    font-size: 0.9rem;
+    -webkit-line-clamp: 2; /* Menos líneas en pantallas pequeñas */
+  }
+
+  .task-status {
+    font-size: 0.8rem;
+    padding: 3px 8px;
+  }
+}
