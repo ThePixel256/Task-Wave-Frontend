@@ -18,12 +18,10 @@
       <p class="section-description">
         Boards you own. Take full control of your projects with these futuristic tools.
       </p>
-      <div class="carousel" #ownedBoardsContainer>
-        <div class="carousel-track" #ownedBoardsTrack>
-          @for (board of ownedBoards(); track board.id) {
-            <app-board-item [board]="board" class="carousel-item"></app-board-item>
-          }
-        </div>
+      <div class="carousel" #ownedBoardsContainer (scroll)="handleInfiniteScroll(ownedBoardsContent)">
+        @for (board of duplicateOwnedBoards(); track board.id) {
+          <app-board-item [board]="board" class="carousel-item"></app-board-item>
+        }
       </div>
     </section>
 
@@ -35,12 +33,10 @@
       <p class="section-description">
         Join forces on boards where you collaborate with others. Innovation happens here.
       </p>
-      <div class="carousel" #colabBoardsContainer>
-        <div class="carousel-track" #colabBoardsTrack>
-          @for (board of memberBoards(); track board.id) {
-            <app-board-item [board]="board" class="carousel-item"></app-board-item>
-          }
-        </div>
+      <div class="carousel" #colabBoardsContainer (scroll)="handleInfiniteScroll(colabBoardsContent)">
+        @for (board of duplicateMemberBoards(); track board.id) {
+          <app-board-item [board]="board" class="carousel-item"></app-board-item>
+        }
       </div>
     </section>
   </main>

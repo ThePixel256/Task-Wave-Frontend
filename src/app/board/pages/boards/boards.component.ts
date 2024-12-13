@@ -1,4 +1,13 @@
-import {AfterViewInit, Component, ElementRef, inject, OnInit, Renderer2, signal, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  computed,
+  ElementRef,
+  inject,
+  OnInit,
+  signal,
+  ViewChild
+} from '@angular/core';
 import {AuthenticationService} from "../../../iam/services/authentication.service";
 import {BoardService} from "../../services/board.service";
 import {Board} from "../../model/board.entity";
@@ -24,11 +33,8 @@ import {Router} from "@angular/router";
   styleUrl: './boards.component.css'
 })
 export class BoardsComponent implements OnInit, AfterViewInit {
-  @ViewChild('ownedBoardsTrack', { static: true }) ownedBoardsTrack!: ElementRef;
-  @ViewChild('ownedBoardsContainer', { static: true }) ownedBoardsContainer!: ElementRef;
-
-  @ViewChild('colabBoardsTrack', { static: true }) colabBoardsTrack!: ElementRef;
-  @ViewChild('colabBoardsContainer', { static: true }) colabBoardsContainer!: ElementRef;
+  @ViewChild('ownedBoardsContainer', { static: true }) ownedBoardsContent!: ElementRef;
+  @ViewChild('colabBoardsContainer', { static: true }) colabBoardsContent!: ElementRef;
 
   private authenticationService: AuthenticationService = inject(AuthenticationService);
   private boardService: BoardService = inject(BoardService);
@@ -40,9 +46,11 @@ export class BoardsComponent implements OnInit, AfterViewInit {
   private userId = this.authenticationService.userId;
 
   ownedBoards = signal<Board[]>([]);
+  duplicateOwnedBoards = computed(() => [...this.ownedBoards(), ...this.ownedBoards()]);
   memberBoards = signal<Board[]>([]);
+  duplicateMemberBoards = computed(() => [...this.memberBoards(), ...this.memberBoards()]);
 
-  constructor(private renderer: Renderer2) {
+  constructor() {
   }
 
   ngOnInit() {
@@ -51,15 +59,12 @@ export class BoardsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      this.checkCarouselOverflow(this.ownedBoardsTrack, this.ownedBoardsContainer);
-      this.checkCarouselOverflow(this.colabBoardsTrack, this.colabBoardsContainer);
-    }, 100);
 
-    window.addEventListener('resize', () => {
-      this.checkCarouselOverflow(this.ownedBoardsTrack, this.ownedBoardsContainer);
-      this.checkCarouselOverflow(this.colabBoardsTrack, this.colabBoardsContainer);
-    });
+    this.enableDrag(this.ownedBoardsContent);
+    this.enableDrag(this.colabBoardsContent);
+
+    this.startAutoScroll(this.ownedBoardsContent);
+    this.startAutoScroll(this.colabBoardsContent);
   }
 
   private getAllOwnedBoards() {
@@ -80,24 +85,6 @@ export class BoardsComponent implements OnInit, AfterViewInit {
 
   private isValidUserId() {
     return this.userId() != 0;
-  }
-
-  private checkCarouselOverflow(track: ElementRef, container: ElementRef) {
-    const trackWidth = track.nativeElement.scrollWidth;
-    const containerWidth = container.nativeElement.offsetWidth;
-    if (trackWidth > containerWidth) {
-      this.activateCarousel(track);
-    } else {
-      this.deactivateCarousel(track);
-    }
-  }
-
-  private activateCarousel(track: ElementRef) {
-    this.renderer.addClass(track.nativeElement, 'active');
-  }
-
-  private deactivateCarousel(track: ElementRef) {
-    this.renderer.removeClass(track.nativeElement, 'active');
   }
 
   private createBoardAndMembers(board: Board, members: Profile[]) {
@@ -142,5 +129,71 @@ export class BoardsComponent implements OnInit, AfterViewInit {
       },
       error: (error) => console.error(error)
     });
+  }
+
+  private enableDrag(track: ElementRef) {
+    let isDragging = false;
+    let startX = 0;
+    let scrollLeft = 0;
+
+    const element = track.nativeElement;
+
+    element.addEventListener('mousedown', (e: MouseEvent) => {
+      isDragging = true;
+      element.style.cursor = 'grabbing';
+      startX = e.pageX - element.offsetLeft;
+      scrollLeft = element.scrollLeft;
+    });
+
+    element.addEventListener('mouseleave', () => {
+      isDragging = false;
+      element.style.cursor = 'grab';
+    });
+
+    element.addEventListener('mouseup', () => {
+      isDragging = false;
+      element.style.cursor = 'grab';
+    });
+
+    element.addEventListener('mousemove', (e: MouseEvent) => {
+      if (!isDragging) return;
+      e.preventDefault();
+      const x = e.pageX - element.offsetLeft;
+      const walk = x - startX;
+      element.scrollLeft = scrollLeft - walk;
+    });
+  }
+
+  protected handleInfiniteScroll(container: ElementRef) {
+    const element = container.nativeElement;
+    const scrollWidth = element.scrollWidth / 2;
+
+    console.log('scrollWidth', scrollWidth, 'element.scrollLeft', element.scrollLeft);
+
+    if (element.scrollLeft === 10) {
+      element.scrollLeft = scrollWidth;
+    }
+
+    if (element.scrollLeft >= scrollWidth) {
+      element.scrollLeft = 1;
+    }
+  }
+  private startAutoScroll(container: ElementRef) {
+    const element = container.nativeElement;
+    const scrollWidth = element.scrollWidth / 2;
+    let scrollAmount = 0;
+
+    const interval = setInterval(() => {
+      scrollAmount += 1;
+      element.scrollLeft += 1;
+
+      if (element.scrollLeft >= scrollWidth) {
+        element.scrollLeft = 0;
+        scrollAmount = 0;
+      }
+    }, 16);
+
+    element.addEventListener('mouseenter', () => clearInterval(interval));
+    element.addEventListener('mouseleave', () => this.startAutoScroll(container));
   }
 }

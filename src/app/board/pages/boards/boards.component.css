@@ -91,24 +91,32 @@
 }
 
 .carousel {
+  padding: 2.5rem 0;
   position: relative;
-  width: 100%;
-  overflow: hidden;
   display: flex;
-  align-items: center;
-}
-
-.carousel-track {
-  width: max-content;
-  padding: 1rem;
-  display: flex;
-  flex-wrap: nowrap;
+  overflow-x: auto;
+  scroll-behavior: smooth;
   gap: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: #82b1ff transparent;
+  cursor: grab;
 }
 
-.carousel-track.active {
-  animation: scroll-loop 15s linear infinite;
-  will-change: transform;
+.carousel:active {
+  cursor: grabbing;
+}
+
+.carousel::-webkit-scrollbar {
+  height: 8px;
+}
+
+.carousel::-webkit-scrollbar-thumb {
+  background-color: #82b1ff;
+  border-radius: 10px;
+}
+
+.carousel::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 @keyframes scroll-loop {
