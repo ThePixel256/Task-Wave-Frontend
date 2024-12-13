@@ -117,4 +117,11 @@ export class BoardComponent {
   private isValidBoardId() {
     return this.boardId() > 0;
   }
+
+  protected deleteTask(task: Task) {
+    this.taskService.delete(task.id).subscribe({
+      next: () => this.getAllTasks(),
+      error: (error) => console.error(error)
+    });
+  }
 }

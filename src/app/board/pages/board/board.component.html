@@ -21,6 +21,7 @@
             [task]="task"
             (click)="openTaskDialog(task, false)"
             cdkDrag
+            (delete)="deleteTask($event)"
             class="kanban-task-item">
           </app-task-item>
         }
@@ -41,6 +42,7 @@
             [task]="task"
             (click)="openTaskDialog(task, false)"
             cdkDrag
+            (delete)="deleteTask($event)"
             class="kanban-task-item">
           </app-task-item>
         }
@@ -61,6 +63,7 @@
             [task]="task"
             (click)="openTaskDialog(task, false)"
             cdkDrag
+            (delete)="deleteTask($event)"
             class="kanban-task-item">
           </app-task-item>
         }
